@@ -1,0 +1,6 @@
+1) Make layers callable objects. (__call__)
+2) Create weights-save method
+3) Create weights-load method
+4) Create model-save method
+5) Create model-load method
+6) Push early-stopping method into Net class.
