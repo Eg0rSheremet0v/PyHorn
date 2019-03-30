@@ -8,7 +8,7 @@ def train_test_split(data, target, test_size=0.3, train_size=0.7, shuffle=True, 
     return data[indexes[:train_len]], data[indexes[train_len:]], target[indexes[:train_len]], target[:indexes[train_len:]] 
 
 def make_holdout(data, target, holdout_size = 0.3, train_size = 0.7, shuffle = True, random_state=None):
-    X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=holdout_size, shuffle=shuffle, random_state=random_state)
+    X_train, X_test, y_train, y_test = train_test_split(data, target, test_size=holdout_size, shuffle=shuffle, random_state=random_state)
     X_train = torch.tensor(X_train, dtype=torch.float).cuda()
     X_test = torch.tensor(X_test, dtype=torch.float).cuda()
     y_train = torch.tensor(y_train, dtype=torch.float).view(len(y_train), 1).cuda()

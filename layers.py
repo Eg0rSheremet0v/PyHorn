@@ -5,7 +5,6 @@ class Input(torch.nn.Module):
         super(Input, self).__init__()
         self.type = 'Input'
         self.neurons_count = input_count
-
     def forward(self, input):
         return input
 

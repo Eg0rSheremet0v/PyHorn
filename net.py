@@ -26,18 +26,18 @@ class Net(torch.nn.Sequential):
     self._set_layer('Dropout', True)
     return prediction
 
-  def train(self, data, labels, **options):
+  def train(self, data, target, **options):
     self._set_layer('Dropout', True) 
     
     self.trainer = Trainer(options)
     if 'early_stop' in options.keys(): 
       self.evaluater = Extenssion(options['early_stop'], options['loss'])
-      train_data, test_data, train_labels, test_labels = make_holdout(data, labels)
+      train_data, test_data, train_target, test_target = make_holdout(data, target)
     
     for epoch in range(options['epochs']):
-      self, residuals = self.trainer.train(self, train_data, train_labels, options)
+      self, residuals = self.trainer.train(self, train_data, train_target, options)
       if self.evaluater:
-        if self.evaluater.stop(self, test_data, test_labels): 
+        if self.evaluater.stop(self, test_data, test_target): 
           self.parameters = self.evaluater.best_parameters
           print('early stop on: %i with loss_train: %f || loss_test: %f' % (epoch, residuals, self.evaluater.min_loss))
           break
