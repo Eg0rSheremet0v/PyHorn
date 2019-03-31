@@ -7,6 +7,7 @@ class Extenssions:
     def train_on_batch(func):
         @functools.wraps(func)
         def wraper(self, net, *data, **options):
+            if 'batch_size' not in options.keys(): return func(self, net, data[0], data[1], **options)
             max_size = data[0].size()[0]
             batch_size = options['batch_size']
             for start_index in range(0, max_size, batch_size):
