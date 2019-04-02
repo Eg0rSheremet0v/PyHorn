@@ -4,6 +4,9 @@ from pyhorn.learning import *
 from pyhorn.train import *
 
 class Net(torch.nn.Sequential):
+
+  best_parameters = None
+
   def __init__(self):
     super().__init__()
     self.number_of_layers = 0
@@ -27,28 +30,10 @@ class Net(torch.nn.Sequential):
     self._set_layer('Dropout', True)
     return prediction
 
-  def train(self, trainer, *data, **options):
-    """
-    Method to train the model.
-
-    --------------------------
-    -- trainer - trainer object to train the model
-    -- epochs - number of epochs while training
-    -- batch_size - subdata with batch_size len for training
-    -- early_stopping - model stop training if quality on test data do not increase in {early_stopping} steps
-    --------------------------
-
-    """
-    self._set_layer('Dropout', True)
-    trainer.train(self, *data, **options)
-    # if 'early_stop' in options.keys(): 
-    #   data, test_data, target, test_target = make_holdout(data, target)
-    # for epoch in range(options['epochs']):
-      # if self.evaluater:
-      #   if self.evaluater.stop(self, test_data, test_target): 
-      #     self.parameters = self.evaluater.best_parameters
-      #     print('early stop on: %i with loss_train: %f || loss_test: %f' % (epoch, residuals, self.evaluater.min_loss))
-      #     break
+  # def learn(self, trainer, *data, **options):
+    # self._set_layer('Dropout', True)
+    # trainer.train(self, *data, **options)
+    
         
   def freeze_layers(self, level):
     for layer in self.layers[:level]:
