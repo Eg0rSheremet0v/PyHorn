@@ -1,6 +1,6 @@
 import torch
-from pyhorn.data_processing import *
-from pyhorn.learning import *
+from eshpy.data_processing import *
+from eshpy.learning import *
 
 class Net(torch.nn.Sequential):
   def __init__(self):
