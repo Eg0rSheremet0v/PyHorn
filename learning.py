@@ -9,6 +9,15 @@ class Extenssion:
         self.best_parameters = None
     
     def stop(self, net, data, labels):
+        """
+        Method that stop a learning process (if specified).
+        ____________________________________
+
+        net - trainable neural network
+        data - test input data
+        labels - test target for input data
+
+        """
         loss = self.loss(net.predict(data), labels)
         if not self.min_loss: self.min_loss = loss
         if loss > self.min_loss: self.stop_count -= 1
@@ -16,11 +25,20 @@ class Extenssion:
         return True if self.stop_count == 0 else False
     
     def save_weights(self, net, filepath = None):
+        """
+        Method to save weights of all layers in the neural network.
+        """
         if filepath: torch.save(net, filepath)
         else:  torch.save(net, os.getcwd())
 
 class Trainer:
     def __init__(self, options):
+        """
+        Module to train neural networks.
+        ____________________________________
+
+        options - 
+        """
         self.loss = options['loss']
         self.optimizer = options['optimizer']
         
