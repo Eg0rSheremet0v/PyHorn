@@ -64,67 +64,6 @@ class Dense(torch.nn.Module):
         signal = torch.matmul(input, self.weights) + self.bias
         return self.activation(signal)
 
-class Neuron(torch.nn.Module):
-    def __init__(self, neurons_number, activation, weights_initialize='rand_norm'):
-        """
-        The main layer of neural network.
-        ____________________________________
-
-        neurons_number - number of neurons in layer
-        activation - function to calculate an output signal
-        weights_initialize - method to precompute weights of the layer
-
-        """
-        super(Dense, self).__init__()
-        self.type = 'Dense'
-        self.neurons_number = neurons_number
-        self.weights_initialize = weights_initialize
-        self.activation = activation
-        self.weights_fchannel = None
-        self.weights_schannel = None
-        self.weights_tchannel = None
-        self.bias = None
-    
-    def init_weights(self, prev_layer_number = None):
-        weights = torch.randn(prev_layer_number, self.neurons_number, dtype=torch.float)
-        
-        bias = torch.randn(self.neurons_number, dtype=torch.float)
-        
-        if self.weights_initialize == 'zero': weigths = torch.zeros((prev_layer_number, self.neurons_number), dtype=torch.float)
-        elif self.weights_initialize == 'ones': weights = torch.ones((prev_layer_number, self.neurons_number), dtype=torch.float)
-        elif self.weights_initialize == 'rand_xavier': torch.nn.init.xavier_uniform_(weights)
-        elif self.weights_initialize == 'rand_he': weights = torch.nn.init.kaiming_uniform_(weights)
-        
-        weights.requires_grad_(True)
-        bias.requires_grad_(True)
-        
-        self.weights_fchannel = torch.nn.Parameter(weights)
-        self.weights_schannel = torch.nn.Parameter(weights)
-        self.weights_tchannel = torch.nn.Parameter(weights)
-        self.bias = torch.nn.Parameter(bias)
-        
-        self.register_parameter('weights_fchannel', self.weights_fchannel)
-        self.register_parameter('weights_schannel', self.weights_schannel)
-        self.register_parameter('weights_tchannel', self.weights_tchannel)
-
-        self.register_parameter('bias', self.bias)
-        
-    def freeze(self):
-        """
-        Method to freeze the layer for learning.
-
-        """
-        self.weights_fchannel.requires_grad_(False)
-        self.weights_schannel.requires_grad_(False)
-        self.weights_tchannel.requires_grad_(False)
-  
-    def forward(self, input):
-        signal_f = torch.matmul(input, self.weights_fchannel)
-        signal_s = torch.matmul(input, self.weights_schannel)
-        signal_t = torch.matmul(input, self.weights_tchannel)
-        signal = signal_f + signal_s + signal_t + self.bias
-        return self.activation(signal)
-
 
 class Dropout(torch.nn.Module):
     def __init__(self, proba):
